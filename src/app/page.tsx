@@ -10,9 +10,13 @@ export default function Home() {
 
   useEffect(() => {
     if (isConnected) {
-      router.push('/portfolio')
+      router.replace('/portfolio')
     }
   }, [isConnected, router])
+
+  if (isConnected) {
+    return null;
+  }
 
   return (
     <div className="relative flex flex-col items-center justify-center h-screen overflow-hidden bg-black">
