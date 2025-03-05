@@ -6,7 +6,7 @@ import { getDefaultConfig } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { polygon, mainnet, sepolia } from 'viem/chains'
 const config = getDefaultConfig({
-  appName: 'Your App Name',
+  appName: 'Omnichain Portfolio',
   projectId: 'YOUR_PROJECT_ID',
   chains: [polygon, mainnet, sepolia],
 })
@@ -17,7 +17,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider modalSize='compact' theme={darkTheme()}>
+        <RainbowKitProvider modalSize='compact' theme={darkTheme({
+          accentColor: '#3B5DFF',
+          accentColorForeground: 'black',
+          borderRadius: 'none',
+          fontStack: 'system'
+        })}>
           {children}
         </RainbowKitProvider>
       </QueryClientProvider>

@@ -26,12 +26,8 @@ export default function Portfolio() {
 
     return (
         <div>
-            <div className="flex justify-end p-4">
-                <ConnectButton />
-            </div>
-            <div className="p-4">
-                <h1>This is the portfolio page</h1>
-                <h3>Connected to address: {address}</h3>
+            <div>
+                <ConnectButton showBalance={false}/>
             </div>
         </div>
     )
