@@ -4,11 +4,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RainbowKitProvider, darkTheme} from '@rainbow-me/rainbowkit'
 import { getDefaultConfig } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
-import { polygon, mainnet, sepolia } from 'viem/chains'
+import { polygon, mainnet, arbitrum } from 'viem/chains'
 const config = getDefaultConfig({
   appName: 'Omni Wallet',
   projectId: 'YOUR_PROJECT_ID',
-  chains: [polygon, mainnet, sepolia],
+  chains: [polygon, mainnet, arbitrum],
 })
 
 const queryClient = new QueryClient()

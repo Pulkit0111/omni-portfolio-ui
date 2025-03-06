@@ -8,7 +8,7 @@ import Stars from '@/components/Stars';
 import { createAvatar } from '@dicebear/core';
 import { micah } from '@dicebear/collection';
 import { BounceLoader } from "react-spinners";
-
+import TokenStrip from '@/components/TokenStrip';
 
 export default function Portfolio() {
     const router = useRouter();
@@ -89,22 +89,31 @@ export default function Portfolio() {
                                 />
                             </div>
                         ) : !selectedChain || !Object.keys(data?.balances || {}).includes(selectedChain) ? (
-                            <div className="flex flex-col items-center justify-center">
-                                <p className="text-white text-xl">No data available for {selectedChain}</p>
+                            <div className="flex flex-col items-center justify-center gap-6 p-8 bg-red-500 rounded-xl border border-gray-700 text-black">
+                                <svg className="w-30 h-30" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01M12 12h.01" />
+                                </svg>
+                                <p className="text-black text-3xl font-bold mb-2">No Data Found</p>
+                                <p className="text-black text-lg text-center">We couldn't find any data for <span className="font-bold">{selectedChain}</span>. Please check back later or try another chain.</p>
                             </div>
                         ) : (
                             <>
-                                <div className="flex flex-row items-center justify-around w-[80%] h-[20%] border-2 border-white mt-2.5 mb-2.5 rounded-lg">
-                                    <img src={data.balances[selectedChain].native.logoUrl} alt={data.balances[selectedChain].native.symbol} className="w-10 h-10 rounded-full" />
-                                    <p>{Number(data.balances[selectedChain].native.balance).toFixed(2)} {data.balances[selectedChain].native.symbol}</p>
-                                    <p>${Number(data.balances[selectedChain].native.valueInUSD).toFixed(2)}</p>
-                                </div>
+                                <TokenStrip
+                                    logo={data.balances[selectedChain].native.logoUrl}
+                                    name={selectedChain}
+                                    symbol={data.balances[selectedChain].native.symbol}
+                                    balance={Number(data.balances[selectedChain].native.balance).toFixed(2)}
+                                    usdValue={Number(data.balances[selectedChain].native.valueInUSD).toFixed(2)}
+                                />
                                 {data.balances[selectedChain].erc20Tokens.map((token: any) => (
-                                    <div className="flex flex-row items-center justify-around w-[80%] h-[20%] border-2 border-white mt-2.5 mb-2.5 rounded-lg">
-                                        <img src={token.logoUrl} alt={token.symbol} className="w-10 h-10 rounded-full" />
-                                        <p>{Number(token.balance).toFixed(2)} {token.symbol}</p>
-                                        <p>${Number(token.valueInUSD).toFixed(2)}</p>
-                                    </div>
+                                    <TokenStrip
+                                        key={token.symbol}
+                                        logo={token.logoUrl}
+                                        name={token.name || token.symbol}
+                                        symbol={token.symbol}
+                                        balance={Number(token.balance).toFixed(2)}
+                                        usdValue={Number(token.valueInUSD).toFixed(2)}
+                                    />
                                 ))}
                             </>
                         )}
