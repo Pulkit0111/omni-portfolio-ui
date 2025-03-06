@@ -60,7 +60,7 @@ export default function Portfolio() {
     async function getPortfolio(){
         try{
             setIsLoading(true);
-            const response = await axios.get(`https://omnichain-portfolio.onrender.com/api/portfolio/${address}?refresh=true`)
+            const response = await axios.get(`https://omnichain-portfolio.onrender.com/api/portfolio/${address}`)
             setData(response.data)
             setIsLoading(false);
         } catch(err) {
