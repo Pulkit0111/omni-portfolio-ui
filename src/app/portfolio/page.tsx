@@ -7,6 +7,7 @@ import axios from 'axios';
 import Stars from '@/components/Stars';
 import { createAvatar } from '@dicebear/core';
 import { micah } from '@dicebear/collection';
+import { BounceLoader } from "react-spinners";
 
 
 export default function Portfolio() {
@@ -60,7 +61,6 @@ export default function Portfolio() {
         try{
             setIsLoading(true);
             const response = await axios.get(`http://localhost:8080/api/portfolio/${address}`)
-            console.log(response.data)
             setData(response.data)
             setIsLoading(false);
         } catch(err) {
@@ -80,33 +80,32 @@ export default function Portfolio() {
                 </div>
                 <div className="flex flex-col items-center justify-center w-full h-[80%] pl-10 pr-10">
                     <>
-                        {Object.keys(data?.balances || {}).includes(selectedChain || '') && !isLoading ? (
+                        {isLoading ? (
+                            <div>
+                                <BounceLoader
+                                    color="#3B5DFF"
+                                    loading={isLoading}
+                                    size={100}
+                                />
+                            </div>
+                        ) : !selectedChain || !Object.keys(data?.balances || {}).includes(selectedChain) ? (
+                            <div className="flex flex-col items-center justify-center">
+                                <p className="text-white text-xl">No data available for {selectedChain}</p>
+                            </div>
+                        ) : (
                             <>
                                 <div className="flex flex-row items-center justify-around w-[80%] h-[20%] border-2 border-white mt-2.5 mb-2.5 rounded-lg">
-                                    <img src={data.balances[selectedChain!].native.logoUrl} alt={data.balances[selectedChain!].native.symbol} className="w-10 h-10 rounded-full" />
-                                    <p>{Number(data.balances[selectedChain!].native.balance).toFixed(2)} {data.balances[selectedChain!].native.symbol}</p>
-                                    <p>${Number(data.balances[selectedChain!].native.valueInUSD).toFixed(2)}</p>
+                                    <img src={data.balances[selectedChain].native.logoUrl} alt={data.balances[selectedChain].native.symbol} className="w-10 h-10 rounded-full" />
+                                    <p>{Number(data.balances[selectedChain].native.balance).toFixed(2)} {data.balances[selectedChain].native.symbol}</p>
+                                    <p>${Number(data.balances[selectedChain].native.valueInUSD).toFixed(2)}</p>
                                 </div>
-                            </>
-                        ):(
-                            <>
-                            </>
-                        )}
-                        {Object.keys(data?.balances || {}).includes(selectedChain || '') && !isLoading ? (
-                            <>
-                                {data.balances[selectedChain!].erc20Tokens.map((token: any) => (
+                                {data.balances[selectedChain].erc20Tokens.map((token: any) => (
                                     <div className="flex flex-row items-center justify-around w-[80%] h-[20%] border-2 border-white mt-2.5 mb-2.5 rounded-lg">
                                         <img src={token.logoUrl} alt={token.symbol} className="w-10 h-10 rounded-full" />
                                         <p>{Number(token.balance).toFixed(2)} {token.symbol}</p>
                                         <p>${Number(token.valueInUSD).toFixed(2)}</p>
                                     </div>
                                 ))}
-                            </>
-                            ) : (
-                            <>
-                                <div className="flex flex-row items-center justify-around w-[80%] h-[20%] border-2 border-white mt-2.5 mb-2.5 rounded-lg">
-                                    <p>Loading...</p>
-                                </div>
                             </>
                         )}
                     </>
