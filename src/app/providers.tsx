@@ -6,7 +6,7 @@ import { getDefaultConfig } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { polygon, mainnet, sepolia } from 'viem/chains'
 const config = getDefaultConfig({
-  appName: 'Omnichain Portfolio',
+  appName: 'Omni Wallet',
   projectId: 'YOUR_PROJECT_ID',
   chains: [polygon, mainnet, sepolia],
 })

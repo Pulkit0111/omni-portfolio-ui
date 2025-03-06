@@ -3,8 +3,8 @@ import './globals.css'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: "Omnichain Portfolio",
-  description: "Omnichain Portfolio to track your presence across all chains",
+  title: "Omni Wallet",
+  description: "Omni Wallet to track your presence across all chains",
 }
 
 export default function RootLayout({

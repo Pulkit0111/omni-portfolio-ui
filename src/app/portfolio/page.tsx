@@ -14,6 +14,7 @@ export default function Portfolio() {
     const {isConnected, address, chain} = useAccount();
     const [avatarBase64, setAvatarBase64] = useState<string>('');
     const [data, setData] = useState<any>({});
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     let selectedChain = chain?.name.toLowerCase();
 
@@ -57,9 +58,11 @@ export default function Portfolio() {
 
     async function getPortfolio(){
         try{
+            setIsLoading(true);
             const response = await axios.get(`http://localhost:8080/api/portfolio/${address}`)
             console.log(response.data)
             setData(response.data)
+            setIsLoading(false);
         } catch(err) {
             console.error(err)
         }
@@ -77,10 +80,10 @@ export default function Portfolio() {
                 </div>
                 <div className="flex flex-col items-center justify-center w-full h-[80%] pl-10 pr-10">
                     <>
-                        {Object.keys(data?.balances || {}).includes(selectedChain || '') ? (
+                        {Object.keys(data?.balances || {}).includes(selectedChain || '') && !isLoading ? (
                             <>
                                 <div className="flex flex-row items-center justify-around w-[80%] h-[20%] border-2 border-white mt-2.5 mb-2.5 rounded-lg">
-                                    <p>{data.balances[selectedChain!].native.symbol}</p>
+                                    <img src={data.balances[selectedChain!].native.logoUrl} alt={data.balances[selectedChain!].native.symbol} className="w-10 h-10 rounded-full" />
                                     <p>{Number(data.balances[selectedChain!].native.balance).toFixed(2)} {data.balances[selectedChain!].native.symbol}</p>
                                     <p>${Number(data.balances[selectedChain!].native.valueInUSD).toFixed(2)}</p>
                                 </div>
@@ -89,11 +92,11 @@ export default function Portfolio() {
                             <>
                             </>
                         )}
-                        {Object.keys(data?.balances || {}).includes(selectedChain || '') ? (
+                        {Object.keys(data?.balances || {}).includes(selectedChain || '') && !isLoading ? (
                             <>
                                 {data.balances[selectedChain!].erc20Tokens.map((token: any) => (
                                     <div className="flex flex-row items-center justify-around w-[80%] h-[20%] border-2 border-white mt-2.5 mb-2.5 rounded-lg">
-                                        <p>{token.symbol}</p>
+                                        <img src={token.logoUrl} alt={token.symbol} className="w-10 h-10 rounded-full" />
                                         <p>{Number(token.balance).toFixed(2)} {token.symbol}</p>
                                         <p>${Number(token.valueInUSD).toFixed(2)}</p>
                                     </div>
@@ -102,7 +105,7 @@ export default function Portfolio() {
                             ) : (
                             <>
                                 <div className="flex flex-row items-center justify-around w-[80%] h-[20%] border-2 border-white mt-2.5 mb-2.5 rounded-lg">
-                                    <p>No Data for {selectedChain}</p>
+                                    <p>Loading...</p>
                                 </div>
                             </>
                         )}
